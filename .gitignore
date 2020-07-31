@@ -11,3 +11,5 @@ Makefile.coq.conf
 extracted
 ocaml/_build
 bin
+.lia.cache
+.nra.cache

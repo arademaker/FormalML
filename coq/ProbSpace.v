@@ -1,7 +1,7 @@
 Require Import Coq.Reals.Rbase.
 Require Import Coq.Reals.Rfunctions.
 Require Import Coq.Reals.RiemannInt.
-Require Import Lra Omega.
+Require Import Lra Lia.
 Require Import List.
 Require Import Morphisms EquivDec.
 
@@ -36,7 +36,7 @@ Section ev.
     firstorder.
   Qed.
 
-  Definition Ω {T} : event T   (* \Omega *)
+  Definition Ω {T} : event T   (* \Lia *)
     := fun x: T => True. 
 
   Definition event_none {T} : event T
@@ -1123,7 +1123,7 @@ Section RandomVariable.
   Definition preimage {Ts: Type} {Td: Type}
              (X: Ts -> Td)
              (B: event Td)
-             := fun omega: Ts => B (X omega).
+             := fun lia: Ts => B (X lia).
 
   (* A random variable is a mapping from a pobability space to a sigma algebra. *)
   Class RandomVariable {Ts:Type} {Td:Type}
@@ -1146,7 +1146,7 @@ Section RandomVariable.
     {
       rrv: RandomVariable dom cod;
       
-      rrv_is_real: forall r:R, sa_sigma (fun omega:Ts => (rv_X omega) <= r);
+      rrv_is_real: forall r:R, sa_sigma (fun lia:Ts => (rv_X lia) <= r);
     }.
   
 End RandomVariable.
@@ -1270,7 +1270,7 @@ Section classic.
       intros [nn Hnn].
       destruct (lt_dec nn m); [ | tauto].
       specialize (H0 _ Hnn).
-      omega.
+      lia.
     - apply make_collection_disjoint_in in Hn.
       exists n; tauto.
   Qed.

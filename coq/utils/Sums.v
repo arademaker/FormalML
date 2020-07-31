@@ -4,7 +4,7 @@ Set Bullet Behavior "Strict Subproofs".
 Require Import Coq.Reals.Rbase.
 Require Import Coq.Reals.Rfunctions.
 Require Import List.
-Require Import EquivDec Nat Omega Lra.
+Require Import EquivDec Nat Lia Lra.
 
 Require Import LibUtils ListAdd RealAdd.
 Import ListNotations.
@@ -43,10 +43,10 @@ Section sum'.
     intros eqq.
     induction n; simpl.
     - trivial. 
-    - rewrite eqq by omega.
+    - rewrite eqq by lia.
       rewrite IHn; trivial.
       intros; apply eqq.
-      omega.
+      lia.
   Qed.
 
   Lemma sum_f_R0'_split f n m :
@@ -57,28 +57,28 @@ Section sum'.
   Proof.
     intros lem.
     induction n; simpl.
-    - assert (m = 0)%nat by omega.
+    - assert (m = 0)%nat by lia.
       subst; simpl; lra.
     - destruct (m == S n); unfold equiv, complement in *.
       + subst.
         simpl.
         rewrite Rplus_assoc.
         f_equal.
-        replace (n - n)%nat with 0%nat by omega.
+        replace (n - n)%nat with 0%nat by lia.
         simpl.
         lra.
-      + rewrite IHn by omega.
+      + rewrite IHn by lia.
         rewrite Rplus_assoc.
         f_equal.
         destruct m; simpl.
-        * replace (n-0)%nat with n by omega.
-          replace (n+0)%nat with n by omega.
+        * replace (n-0)%nat with n by lia.
+          replace (n+0)%nat with n by lia.
           trivial.
-        * replace (n - m)%nat with (S (n - S m))%nat by omega.
+        * replace (n - m)%nat with (S (n - S m))%nat by lia.
           simpl.
           f_equal.
           f_equal.
-          omega.
+          lia.
   Qed.
 
   Lemma sum_f_R0'_split_on f n m :
@@ -105,11 +105,11 @@ Section sum'.
   Proof.
     intros eqq.
     induction n; simpl.
-    - apply eqq; omega.
-    - rewrite eqq by omega.
+    - apply eqq; lia.
+    - rewrite eqq by lia.
       rewrite IHn; trivial.
       intros; apply eqq.
-      omega.
+      lia.
   Qed.
 
   Lemma sum_f_R0_split f n m:
@@ -120,18 +120,18 @@ Section sum'.
   Proof.
     intros ltm.
     induction n; simpl.
-    - omega.
+    - lia.
     - destruct (m == n); unfold equiv, complement in *.
       + subst.
         rewrite Nat.sub_diag; simpl; trivial.
-      + rewrite IHn by omega.
+      + rewrite IHn by lia.
         rewrite Rplus_assoc.
         f_equal.
-        replace (n - m)%nat with (S (n - S m))%nat by omega.
+        replace (n - m)%nat with (S (n - S m))%nat by lia.
         simpl.
         f_equal.
         f_equal.
-        omega.
+        lia.
   Qed.
 
   Lemma sum_f_R0_split_on f n m:
@@ -142,17 +142,17 @@ Section sum'.
     sum_f_R0 (fun x => f (x+S (S m)))%nat (n-S (S m)).
   Proof.
     intros ltm.
-    rewrite (sum_f_R0_split f n m) by omega.
+    rewrite (sum_f_R0_split f n m) by lia.
     repeat rewrite Rplus_assoc.
     f_equal.
-    rewrite (sum_f_R0_split  (fun x : nat => f (x + S m)%nat) (n - S m) 0) by omega.
+    rewrite (sum_f_R0_split  (fun x : nat => f (x + S m)%nat) (n - S m) 0) by lia.
     simpl.
     f_equal.
-    replace (n - S (S m))%nat with (n - S m - 1)%nat by omega.
+    replace (n - S (S m))%nat with (n - S m - 1)%nat by lia.
     apply sum_f_R0_ext.
     intros.
     f_equal.
-    omega.
+    lia.
   Qed.
 
   Lemma sum_f_R0'_chisel f N n :
@@ -171,10 +171,10 @@ Proof.
     f_equal.
     + apply sum_f_R0'_ext; intros.
       destruct (x == n);  unfold equiv, complement in *; subst; [| intuition].
-      omega.
+      lia.
     + apply sum_f_R0'_ext; intros.
       destruct (x + S n == n)%nat;  unfold equiv, complement in *; subst; [| intuition].
-      omega.
+      lia.
   Qed.
 
   Lemma sum_f_R0'_const c n: sum_f_R0' (fun _ : nat => c) n = (c * INR n)%R.
@@ -204,7 +204,7 @@ Proof.
     f_equal.
     rewrite Rplus_0_r.
     f_equal.
-    omega.
+    lia.
   Qed.
 
   Lemma sum_f_R0'_as_fold_right f (n:nat) :
@@ -215,7 +215,7 @@ Proof.
     apply sum_f_R0'_ext.
     intros.
     f_equal.
-    omega.
+    lia.
   Qed.
 
   Lemma sum_f_R0'_plus f1 f2 n :
@@ -290,16 +290,16 @@ Section inf_sum'.
       destruct (H eps epsgt) as [N Nconv].
       exists (S N); intros n ngt.
       destruct n.
-      + omega.
+      + lia.
       + rewrite <- sum_f_R0_sum_f_R0'.
         apply Nconv.
-        omega.
+        lia.
     - intros eps epsgt.
       destruct (H eps epsgt) as [N Nconv].
       exists N; intros n ngt.
       rewrite sum_f_R0_sum_f_R0'.
       apply Nconv.
-      omega.
+      lia.
   Qed.
 
   Lemma infinite_sum'_ext (s1 s2 : nat -> R) (l : R) :
@@ -328,22 +328,22 @@ Section inf_sum'.
     - exists N
       ; intros n0 n0_ge.
       specialize (Nconv (n + n0)%nat).
-      cut_to Nconv; [ | omega].
+      cut_to Nconv; [ | lia].
       replace (R_dist (sum_f_R0' (fun x : nat => s (x + n)%nat) n0) l) with
             ( R_dist (sum_f_R0' s (n + n0)) (l + sum_f_R0' s n)); trivial.
       unfold R_dist.
-      rewrite (sum_f_R0'_split s (n+n0) n) by omega.
-      replace ((n + n0 - n)%nat) with n0 by omega.
+      rewrite (sum_f_R0'_split s (n+n0) n) by lia.
+      replace ((n + n0 - n)%nat) with n0 by lia.
       f_equal.
       lra.
     - exists (N+n)%nat
       ; intros n0 n0_ge.
       specialize (Nconv (n0-n)%nat).
-      cut_to Nconv; [ | omega].
+      cut_to Nconv; [ | lia].
       replace (R_dist (sum_f_R0' s n0) (l + sum_f_R0' s n))
                       with (R_dist (sum_f_R0' (fun x : nat => s (x + n)%nat) (n0 - n)) l); trivial.
       unfold R_dist.
-      rewrite (sum_f_R0'_split s n0 n) by omega.
+      rewrite (sum_f_R0'_split s n0 n) by lia.
       f_equal.
       lra.
   Qed.
@@ -575,7 +575,7 @@ Section inf_sum'.
     apply Rnot_ge_lt in n.
     destruct (inf (- sum)); [ lra | ].
     specialize (H x).
-    cut_to H; [ | omega].
+    cut_to H; [ | lia].
     unfold R_dist in H.
     destruct (Req_dec (sum_f_R0' f x) 0).
     - rewrite H0 in H.
@@ -614,7 +614,7 @@ Section harmonic.
 
   Lemma pow_le1 n : (1 <= 2 ^ n)%nat.
   Proof.
-    induction n; simpl; omega.
+    induction n; simpl; lia.
   Qed.
 
   Lemma Sle_mult_gt1 a n :
@@ -622,17 +622,7 @@ Section harmonic.
     (a > 1)%nat ->
     (S n <= a * n)%nat.
   Proof.
-    destruct a; try omega.
-    destruct a; try omega.
-    intros.
-    simpl.
-    destruct n; simpl; try omega.
-    apply le_n_S.
-    rewrite plus_comm.
-    apply le_n_S.
-    fold add.
-    rewrite <- plus_assoc.
-    apply Nat.le_add_r.
+    destruct a; lia.
   Qed.
 
   Lemma pow_exp_gt a b :
@@ -641,10 +631,10 @@ Section harmonic.
   Proof.
     intros neq.
     induction b; simpl.
-    - omega.
+    - lia.
     - apply gt_n_S in IHb.
       eapply le_gt_trans; try eassumption.
-      apply Sle_mult_gt1; omega. 
+      apply Sle_mult_gt1; lia. 
   Qed.      
   Lemma sum_f_R0'_eq2 n :
     sum_f_R0' (fun _:nat => 1 / INR (2^(S n))) (2^n)%nat = 1/2.
@@ -660,11 +650,11 @@ Section harmonic.
       + simpl; lra.
       + apply INR_nzero_eq.
         apply Nat.pow_nonzero.
-        omega.
+        lia.
     - simpl; lra.
     - apply INR_nzero_eq.
       apply Nat.pow_nonzero.
-      omega.
+      lia.
   Qed.
   
   Lemma sum_f_R0'_bound2 (n:nat) : sum_f_R0' (fun i:nat => 1 / INR (S i)) (2^n)%nat >= 1+(INR n)/2.
@@ -686,10 +676,10 @@ Section harmonic.
       apply Rmult_le_compat_l; [ lra | ].
       apply Rinv_le_contravar.
       + apply INR_zero_lt.
-        omega.
+        lia.
       + apply le_INR.
         simpl.
-        omega.
+        lia.
   Qed.
 
   Lemma harmonic_diverges' l : ~ infinite_sum' (fun i:nat => 1 / INR (S i)) l.
@@ -722,14 +712,14 @@ Section harmonic.
       simpl.
       rewrite NPeano.Nat.pow_add_r.
       unfold ge.
-      replace N with (N * 1)%nat at 1 by omega.
+      replace N with (N * 1)%nat at 1 by lia.
       apply mult_le_compat.
       + generalize (pow_exp_gt 4 N)
-        ; omega.
+        ; lia.
       + generalize (Z.to_nat (up l)); intros n.
         destruct n; simpl.
-        * omega.
-        * generalize (pow_exp_gt 4 n); omega.
+        * lia.
+        * generalize (pow_exp_gt 4 n); lia.
   Qed.
 
   

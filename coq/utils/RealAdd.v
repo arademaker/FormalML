@@ -4,7 +4,7 @@ Require Import Ranalysis_reg.
 Require Import Reals.Integration.
 Require Import Rtrigo_def.
 Require Import List.
-Require Import EquivDec Nat Omega Lra.
+Require Import EquivDec Nat Lia Lra.
 
 Require Import LibUtils ListAdd.
 Require Import Relation_Definitions Sorted.
@@ -20,7 +20,7 @@ Lemma INR_nzero {n} :
   (n > 0)%nat -> INR n <> 0.
 Proof.
   destruct n.
-  - omega.
+  - lia.
   - rewrite S_INR.
     generalize (pos_INR n); intros.
     lra.
@@ -30,7 +30,7 @@ Lemma INR_nzero_eq {n} :
   (~ n = 0)%nat -> INR n <> 0.
 Proof.
   destruct n.
-  - omega.
+  - lia.
   - rewrite S_INR.
     generalize (pos_INR n); intros.
     lra.
@@ -40,7 +40,7 @@ Lemma INR_zero_lt {n} :
   (n > 0)%nat -> 0 < INR n.
 Proof.
   destruct n.
-  - omega.
+  - lia.
   - rewrite S_INR.
     generalize (pos_INR n); intros.
     lra.
@@ -102,16 +102,16 @@ Proof.
   Opaque INR.
   revert s.
   induction n; simpl; intros s.
-  - replace (s+0)%nat with s by omega.
+  - replace (s+0)%nat with s by lia.
     lra.
   - specialize (IHn (S s)).
     unfold Rminus in *.    
     rewrite Rplus_assoc in *.
     f_equal.
     simpl in IHn.
-    replace (S (s + n))%nat with (s + (S n))%nat in IHn by omega.
+    replace (S (s + n))%nat with (s + (S n))%nat in IHn by lia.
     rewrite IHn.
-    replace (s+1)%nat with (S s) by omega.
+    replace (s+1)%nat with (S s) by lia.
     lra.
     Transparent INR.
 Qed.
@@ -276,7 +276,7 @@ Proof.
   destruct (archimed r) as [lb ub].
   assert (IZR (up r) > 0) by lra.
   apply lt_IZR in H0.
-  omega.
+  lia.
 Qed.
 
 Lemma up_nonneg (r:R) :
@@ -285,7 +285,7 @@ Proof.
   inversion 1.
   - unfold Z.ge; rewrite up_pos; congruence.
   - subst. rewrite up0.
-    omega.
+    lia.
 Qed.
 
 Lemma INR_up_pos r :
@@ -295,7 +295,7 @@ Proof.
   rewrite INR_IZR_INZ.
   rewrite Z2Nat.id; trivial.
   generalize (up_nonneg _ H).
-  omega.
+  lia.
 Qed.
 
 Lemma frac_max_frac_le (x y:R) :
