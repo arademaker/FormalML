@@ -8,7 +8,7 @@ Require Import Morphisms EquivDec.
 Require Import Utils.
 Import ListNotations.
 
-(* Declare Scope prob. *)
+Declare Scope prob.
 
 Section ev.
   Definition event T := T -> Prop.
@@ -160,7 +160,7 @@ Proof.
   firstorder.
 Qed.
 
-Hint Resolve @event_sub_true @event_false_sub : prob.
+Hint Resolve event_sub_true event_false_sub : prob.
 
 Lemma event_sub_union_l {T} (A B:event T) : A ≤ A ∪ B.
 Proof.
@@ -172,7 +172,7 @@ Proof.
   firstorder.
 Qed.
 
-Hint Resolve @event_sub_union_l @event_sub_union_r : prob.
+Hint Resolve event_sub_union_l event_sub_union_r : prob.
 
 Lemma event_inter_sub_l {T} (A B:event T) : A ∩ B ≤ A.
 Proof.
@@ -184,7 +184,7 @@ Proof.
   firstorder.
 Qed.
 
-Hint Resolve @event_inter_sub_l @event_inter_sub_r : prob.
+Hint Resolve event_inter_sub_l event_inter_sub_r : prob.
 
 Lemma event_union_true_l {T} (A:event T) : Ω ∪ A === Ω.
 Proof.
@@ -486,7 +486,7 @@ Proof.
   apply sa_dec.
 Qed.
 
-Hint Resolve @ps_event_union_complement @ps_event_union_not_self 2ps_event_union_diff @ps_event_union_diff_sub : prob.
+Hint Resolve ps_event_union_complement ps_event_union_not_self ps_event_union_diff ps_event_union_diff_sub : prob.
 
 Lemma sa_notnot {T} {s: SigmaAlgebra T} (A:event T) : forall x, ~ ~ A x -> A x.
 Proof.

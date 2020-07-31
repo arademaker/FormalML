@@ -1,1 +1,1 @@
--R coq nn_s_opt
+-R coq nn_s_opt -arg -set -arg "Warnings=+default"
