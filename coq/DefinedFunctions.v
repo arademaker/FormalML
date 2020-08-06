@@ -5,6 +5,7 @@ Require Import RelationClasses.
 Require Import List.
 Require Import Permutation.
 Require Import NPeano BinInt.
+Require Import BinNat.
 Require Import Lra Lia.
 Require Reals.
 Require Import Eqdep_dec.
@@ -41,14 +42,13 @@ Section DefinedFunctions.
     
     Inductive SubVar : Set :=
     | Name (s : string)
-    | Sub (v : SubVar) (i : nat).
-
+    | Sub (v : SubVar) (i : N).
 
     Definition var_dec : forall v1 v2 : SubVar, {v1 = v2} + {v1 <> v2}.
     Proof.
       decide equality.
       apply string_dec.
-      apply Nat.eq_dec.
+      apply N.eq_dec.
     Defined.
     
     Global Instance var_eqdec : EqDec SubVar eq.

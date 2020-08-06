@@ -6,6 +6,7 @@ open Pretty
 
 
 let () = Format.printf "Result of running opt: %a\n" (pretty_visible_option pretty_df_env) opt ;;
+(*
 let () = Format.printf "Result of running opt2: %a\n" (pretty_visible_option pretty_df_env) opt2 ;;
 let () = Format.printf "The testopt environment: %a\n" pretty_df_env testopt ;;
 let () = Format.printf "The testreeopt environment: %a\n" pretty_df_env testreeopt ;;
@@ -67,7 +68,7 @@ let () = Format.printf "wisconsin gradenv : %a\n" pretty_df_env gradenv ;;
 *)
 
 
-
+*)
 
 
 

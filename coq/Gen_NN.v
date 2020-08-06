@@ -22,13 +22,13 @@ Section GenNN.
                                  f_activ : UnitDefinedFunction DTfloat; f_loss : UnitDefinedFunction DTfloat }.
 
   Definition mkSubVarVector (v : SubVar) (n : nat) : UnitDefinedFunction (DTVector n) :=
-    DVector tt (fun i => Var (Sub v (proj1_sig i), DTfloat) tt).
+    DVector tt (fun i => Var (Sub v (N.of_nat (proj1_sig i)), DTfloat) tt).
 
   Definition mkVarVector (v : SubVar) (n : nat) : UnitDefinedFunction (DTVector n) :=
     Var (v, DTVector n) tt.
 
   Definition mkSubVarMatrix (v : SubVar) (n m : nat) : UnitDefinedFunction (DTMatrix n m) :=
-    DMatrix tt (fun i j => Var (Sub (Sub v (proj1_sig i)) (proj1_sig j), DTfloat) tt).
+    DMatrix tt (fun i j => Var (Sub (Sub v (N.of_nat (proj1_sig i))) (N.of_nat (proj1_sig j)), DTfloat) tt).
 
   Definition mkVarMatrix (v : SubVar) (n m : nat) : UnitDefinedFunction (DTMatrix n m) :=
     Var (v, DTMatrix n m) tt.
@@ -182,7 +182,7 @@ Section GenNN.
   Program Definition mkNN_gen (n1:nat) (nlist : list nat) (ivar wvar f_activ_var : SubVar) 
              (f_activ : UnitDefinedFunction DTfloat) : 
     UnitDefinedFunction (DTVector (last nlist n1)) :=
-    let vlist := map (fun i => Sub wvar i) (seq 1 (length nlist)) in
+    let vlist := map (fun i => Sub wvar (N.of_nat i)) (seq 1 (length nlist)) in
     let ivec := mkVarVector ivar n1 in
     eq_rect _ UnitDefinedFunction
             (mkNN_gen_0 n1 (combine nlist vlist) ivec f_activ_var f_activ) _ _.
@@ -196,7 +196,7 @@ Section GenNN.
   Program Definition mkNN_Var_gen (n1:nat) (nlist : list nat) (ivar wvar f_activ_var : SubVar) 
              (f_activ : UnitDefinedFunction DTfloat) : 
     UnitDefinedFunction (DTVector (last nlist n1)) :=
-    let vlist := map (fun i => Sub wvar i) (seq 1 (length nlist)) in
+    let vlist := map (fun i => Sub wvar (N.of_nat i)) (seq 1 (length nlist)) in
     let ivec := mkVarVector ivar n1 in
     eq_rect _ UnitDefinedFunction
             (mkNN_Var_gen_0 n1 (combine nlist vlist) ivec f_activ_var f_activ) _ _.
@@ -210,7 +210,7 @@ Section GenNN.
   Program Definition mkNN_Mat_Var_gen (nsamp n1:nat) (nlist : list nat) (ivar wvar f_activ_var : SubVar) 
              (f_activ : UnitDefinedFunction DTfloat) : 
     UnitDefinedFunction (DTMatrix (last nlist n1) nsamp) :=
-    let vlist := map (fun i => Sub wvar i) (seq 1 (length nlist)) in
+    let vlist := map (fun i => Sub wvar (N.of_nat i)) (seq 1 (length nlist)) in
     let imat := mkVarMatrix ivar n1 nsamp in
     eq_rect _ UnitDefinedFunction
             (mkNN_Mat_Var_gen_0 nsamp n1 (combine nlist vlist) imat f_activ_var f_activ) _ _.

@@ -2,8 +2,9 @@
 
 Require Extraction.
 Extraction Language OCaml.
-Require Import ExtrOcamlBasic ExtrOcamlString ExtrOcamlZInt ExtrOcamlNatInt.
+Require Import ExtrOcamlBasic ExtrOcamlString ExtrOcamlNatInt ExtrOcamlZInt.
 Extraction Blacklist String List.
+
 
 Require Import FloatishIEEE.
 Require Import ExtrFloatishIEEE.
@@ -22,12 +23,17 @@ Local Open Scope list.
 
 Existing Instance floatish_IEEE.
 
+(*
+Extract Inductive Coq.Init.Datatypes.nat => int [ "0" "Pervasives.succ" ]
+                          "(fun fO fS n -> if n=0 then fO () else fS (n-1))".
+*)
 Example test :=
   mk_env_entry (Name "f", DTfloat) (FfromZ 1)%Z ::
                mk_env_entry (Name "v", DTVector 3) (ConstVector 3 ((FfromZ (-2)))%Z) :: 
                mk_env_entry (Name "m", DTMatrix 2 3) (ConstMatrix 2 3 (FfromZ 3))%Z :: nil.
 Module API.
   Example opt := @Gen_NN.opt floatish_IEEE.
+(*
   Example opt2 := @Gen_NN.opt2 floatish_IEEE.
   Example test_update := @Gen_NN.test_update floatish_IEEE.
   Example testopt := @Gen_NN.testopt floatish_IEEE.
@@ -59,8 +65,12 @@ Module API.
   Definition nn_test_env := Gen_NN.NN_test_env.  
   Definition nn_test_gradenv_tree := Gen_NN.NN_test_gradenv_tree.
   Definition nn_test_gradenv := Gen_NN.NN_test_gradenv.
-  
+  *)
   End API.
 
-Extraction "extracted/NnoptExtracted" API.
+Cd "extracted".
+Separate Extraction API.
 
+(*
+Extraction "extracted/NnoptExtracted" API.
+*)
